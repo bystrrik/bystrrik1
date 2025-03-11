@@ -34,3 +34,32 @@
   - 1 — заведение является сетевым;
 - district — административный район, в котором находится заведение, например Центральный административный округ;
 - seats — количество посадочных мест.
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import plotly.express as px
+import json
+
+from plotly import graph_objects as go 
+from folium import Map, Choropleth
+from folium import Map, Marker
+from folium.plugins import MarkerCluster
+
+try:
+    data = pd.read_csv('/datasets/moscow_places.csv')
+except:
+    data = pd.read_csv('https://code.s3.yandex.net/datasets/moscow_places.csv')
+    
+data.head(10)
+
+display('Количество заведений:', data['name'].nunique())
+
+display(data.info())
+display('Кол-во пропусков:')
+display(data.isna().sum())
+display('Кол-во дубликатов:')
+display(data.duplicated().sum())
+
+Мы имеем 5614 уникальных заведений, всего имеем информацию - о 8405. Все столбыцы имеют нужный тип данных, кроме seats. Имеется много пропущенных значений в столбцах: hours; price; avg_bill; middle_avg_bill; middle_coffee_cup; seats, что не позволяет нам их отбросить, поскольку это может исказить результаты, проведем их обработку. Дубликаты не были выялены, однко проверим это еще раз после предобработки данных.
